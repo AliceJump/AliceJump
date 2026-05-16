@@ -157,43 +157,6 @@
 
 ---
 
-# 📈 Contribution Activity
-
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=AliceJump&theme=github-compact&hide_border=true" alt="Contribution graph" />
-</p>
-
----
-
-# 🔥 GitHub Metrics
-
-<p align="center">
-
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=AliceJump&theme=github" />
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=AliceJump&theme=github&utcOffset=8" />
-
-</p>
-
----
-
-# 📬 Contact
-
-<p align="center">
-
-  <a href="https://github.com/AliceJump/issues">
-    <img src="https://img.shields.io/badge/Issues-Open-1f6feb?style=for-the-badge" />
-  </a>
-
-  <a href="https://github.com/AliceJump/discussions">
-    <img src="https://img.shields.io/badge/Discussions-Join-8957e5?style=for-the-badge" />
-  </a>
-
-</p>
-
-> 欢迎通过 GitHub Issue / Discussion 交流。  
-
----
-
 # 💭 Philosophy
 
 <p align="center">
