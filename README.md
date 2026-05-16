@@ -5,7 +5,7 @@
 <h1 align="center">AliceJump</h1>
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&center=true&vCenter=true&width=520&lines=Python+Automation;OCR+%E4%B8%8E%E5%9B%BE%E5%83%8F%E8%AF%86%E5%88%AB;Toolchain+%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%87%AA%E5%8A%A8%E5%8C%96" alt="Typing intro" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&center=true&vCenter=true&width=520&lines=Solve+Problems;Not+Showcase+Technology;Build+Useful+Automation" />
 </p>
 
 <p align="center">
@@ -38,19 +38,6 @@
 <p align="center">
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=AliceJump&theme=github-compact&hide_border=true" alt="Contribution graph" />
 </p>
-
----
-
-# 📊 Repository Overview
-
-| Category | Info |
-| --- | --- |
-| Repositories | 30 |
-| Followers | 15 |
-| Following | 1 |
-| Total Stars | 26 |
-| Main Language | Python |
-| Focus | Automation / OCR / Workflow |
 
 ---
 
@@ -100,14 +87,6 @@
 
 ## ok-end-field
 
-<p align="center">
-
-  <a href="https://github.com/AliceJump/ok-end-field">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=AliceJump&repo=ok-end-field&hide_border=true" />
-  </a>
-
-</p>
-
 [![Stars](https://img.shields.io/github/stars/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field)
 [![Forks](https://img.shields.io/github/forks/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field)
 [![Last Commit](https://img.shields.io/github/last-commit/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field)
@@ -133,14 +112,6 @@
 ---
 
 ## ok-gf2
-
-<p align="center">
-
-  <a href="https://github.com/AliceJump/ok-gf2">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=AliceJump&repo=ok-gf2&hide_border=true" />
-  </a>
-
-</p>
 
 [![Stars](https://img.shields.io/github/stars/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2)
 [![Forks](https://img.shields.io/github/forks/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2)
@@ -226,7 +197,7 @@
 # 💭 Philosophy
 
 <p align="center">
-  <sub>
-    Automation should reduce repetition, not create more of it.
-  </sub>
+  <em>Solve problems, not showcase technology.</em>
 </p>
+
+---
