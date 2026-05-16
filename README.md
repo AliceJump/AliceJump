@@ -1,16 +1,22 @@
-## Hi there 👋
+# 👋 你好，我是 AliceJump
 
-<!--
-**AliceJump/AliceJump** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+欢迎来到我的 GitHub 主页仓库。
 
-Here are some ideas to get you started:
+## 关于我
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+- 💻 热爱编程与持续学习
+- 🌱 持续探索软件开发与工程实践
+- 🤝 欢迎交流与合作
+
+## 目前状态
+
+- 🔭 正在完善个人项目与技术沉淀
+- 📚 持续学习新技术并记录实践经验
+
+## 联系方式
+
+- 📫 你可以通过 GitHub Issues 或 Discussions 与我联系
+
+---
+
+感谢访问，祝你编码愉快！✨
