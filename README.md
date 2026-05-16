@@ -1,22 +1,44 @@
-# 👋 你好，我是 AliceJump
+# 👋 AliceJump
 
-欢迎来到我的 GitHub 主页仓库。
+> he/him
 
-## 关于我
+欢迎来到我的 GitHub 主页仓库，这里用于展示个人项目与开源实践。
 
-- 💻 热爱编程与持续学习
-- 🌱 持续探索软件开发与工程实践
-- 🤝 欢迎交流与合作
+## 📊 账号概览（更新于 2026-05）
 
-## 目前状态
+- Repositories: **30**
+- Followers: **15**
+- Following: **1**
+- Stars: **26**
 
-- 🔭 正在完善个人项目与技术沉淀
-- 📚 持续学习新技术并记录实践经验
+## 🏆 Achievements
 
-## 联系方式
+- Quickdraw
+- Pull Shark ×2
+- Pair Extraordinaire
+- YOLO
+- Starstruck ×2
 
-- 📫 你可以通过 GitHub Issues 或 Discussions 与我联系
+## 🚀 代表项目
 
----
+- **ok-end-field**：终末地自动化（Python，AGPL-3.0）
+- **ok-gf2**：少女前线2自动化工具（Python）
+- **ok-script**：现代 Python 游戏自动化框架（Fork）
+- **MaaEnd**：明日方舟：终末地游戏小助手（Go，Fork）
+- **TouhouLittleMaid-marriage**：车万女仆相关模组（Java，MIT）
 
-感谢访问，祝你编码愉快！✨
+## 🧩 技术方向
+
+- Python 自动化脚本与工具链
+- Java / Kotlin 项目开发
+- C# 与游戏相关开发实践
+- 开源项目维护与 Fork 二次开发
+
+## 📌 更多仓库
+
+你可以在主页查看完整仓库列表，包括：
+`MikuSB`、`ok-neverness-to-everness`、`ok-wuthering-waves`、`YandeReViewer`、`YSMParser`、`BilibiliCollectionsDownloader` 等。
+
+## 📫 联系方式
+
+欢迎通过 GitHub Issue / Discussion 交流。
