@@ -92,22 +92,7 @@
 [![Last Commit](https://img.shields.io/github/last-commit/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field)
 [![License](https://img.shields.io/github/license/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field/blob/main/LICENSE)
 
-> 终末地自动化工具  
-> Python / OCR / 工作流自动化  
-> License: AGPL-3.0
-
-### Features
-
-- OCR 驱动自动化
-- 图像识别与区域检测
-- 自动送货 / 日常任务工作流
-- 模块化任务系统
-- Feature Label 数据化
-- Python 自动化工具链
-
-### Stack
-
-`Python` `OCR` `OpenCV` `Automation` `Workflow`
+> 终末地自动化工具
 
 ---
 
@@ -119,19 +104,6 @@
 [![License](https://img.shields.io/github/license/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2/blob/main/LICENSE)
 
 > 少女前线2自动化工具  
-> Python 自动化脚本与工具链
-
-### Features
-
-- 自动化战斗流程
-- OCR 状态识别
-- UI 工作流驱动
-- 自动任务系统
-- Python 自动化工具链
-
-### Stack
-
-`Python` `OCR` `Automation`
 
 ---
 
@@ -142,7 +114,6 @@
 - 游戏工具链
 - 工作流自动化
 - Python 工具链开发
-- 自动化框架设计
 
 ---
 
