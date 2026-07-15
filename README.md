@@ -68,15 +68,15 @@
 
 <p align="center">
 
-  <img src="https://icons.${ALICEJUMP_DOMAIN}/icons?i=python" height="48" alt="Python" />
-  <img src="https://icons.${ALICEJUMP_DOMAIN}/icons?i=opencv" height="48" alt="OpenCV" />
-  <img src="https://icons.${ALICEJUMP_DOMAIN}/icons?i=pytorch" height="48" alt="PyTorch" />
+  <img src="https://skill-icons.2630923991.workers.dev/icons?i=python" height="48" alt="Python" />
+  <img src="https://skill-icons.2630923991.workers.dev/icons?i=opencv" height="48" alt="OpenCV" />
+  <img src="https://skill-icons.2630923991.workers.dev/icons?i=pytorch" height="48" alt="PyTorch" />
   <img src="https://icons.${ALICEJUMP_DOMAIN}/icons?i=git" height="48" alt="Git" />
-  <img src="https://icons.${ALICEJUMP_DOMAIN}/icons?i=github" height="48" alt="GitHub" />
-  <img src="https://icons.${ALICEJUMP_DOMAIN}/icons?i=vscode" height="48" alt="VSCode" />
-  <img src="https://icons.${ALICEJUMP_DOMAIN}/icons?i=linux" height="48" alt="Linux" />
-  <img src="https://icons.${ALICEJUMP_DOMAIN}/icons?i=bash" height="48" alt="Bash" />
-  <img src="https://icons.${ALICEJUMP_DOMAIN}/icons?i=powershell" height="48" alt="PowerShell" />
+  <img src="https://skill-icons.2630923991.workers.dev/icons?i=github" height="48" alt="GitHub" />
+  <img src="https://skill-icons.2630923991.workers.dev/icons?i=vscode" height="48" alt="VSCode" />
+  <img src="https://skill-icons.2630923991.workers.dev/icons?i=linux" height="48" alt="Linux" />
+  <img src="https://skill-icons.2630923991.workers.dev/icons?i=bash" height="48" alt="Bash" />
+  <img src="https://skill-icons.2630923991.workers.dev/icons?i=powershell" height="48" alt="PowerShell" />
 
 </p>
 
