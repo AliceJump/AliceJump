@@ -284,86 +284,62 @@ function timeAgo(dateStr: string): string {
 }
 
 // =============================================================================
-// SVG Badge 生成器 — 兼容 Shields.io 风格
+// SVG Badge 生成器 — 简单风格
 // =============================================================================
 
 const COLOR_MAP: Record<string, string> = {
-	brightgreen: '#4c1',
+	brightgreen: '#44CC11',
 	green: '#97CA00',
-	yellow: '#dfb317',
-	yellowgreen: '#a4a61d',
-	orange: '#fe7d37',
-	red: '#e05d44',
-	blue: '#007ec6',
+	yellow: '#DFB317',
+	yellowgreen: '#A4A61D',
+	orange: '#FE7D37',
+	red: '#E05D44',
+	blue: '#007EC6',
 	grey: '#555',
 	lightgrey: '#9f9f9f',
-	blueviolet: '#8a2be2',
+	blueviolet: '#8A2BE2',
 };
 
 function resolveColor(color: string): string {
 	return COLOR_MAP[color.toLowerCase()] || (color.startsWith('#') ? color : `#${color}`);
 }
 
-/**
- * 近似计算文本宽度（Verdana 11px / 13px）
- * 基于 shields.io 使用的 Verdana 字体近似度量
- */
-function textWidth(text: string, fontSize: number): number {
-	let w = 0;
-	for (const ch of text) {
-		if (ch >= 'A' && ch <= 'Z') w += 6.5;
-		else if (ch >= 'a' && ch <= 'z') w += 5.5;
-		else if (ch >= '0' && ch <= '9') w += 5.5;
-		else if (ch === ' ') w += 3;
-		else if (ch === ':' || ch === ';') w += 3;
-		else w += 6;
-	}
-	return w * (fontSize / 11);
-}
-
 function buildBadgeSvg(label: string, message: string, color: string, style: string = 'flat'): string {
 	const resolved = resolveColor(color);
-	const fontSize = style === 'for-the-badge' ? 13 : 11;
-	const height = style === 'for-the-badge' ? 28 : 20;
-	const padH = style === 'for-the-badge' ? 8 : 5;
-	const labelW = Math.ceil(textWidth(label, fontSize) + padH * 2);
-	const msgW = Math.ceil(textWidth(message, fontSize) + padH * 2);
-	const totalW = labelW + msgW;
-
-	const labelUpper = label.toUpperCase();
-	const msgUpper = message.toUpperCase();
+	const labelLen = label.length * 7 + 16;
+	const msgLen = message.length * 7 + 16;
+	const totalW = labelLen + msgLen;
 
 	if (style === 'for-the-badge') {
 		return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${totalW}" height="${height}">
-  <clipPath id="r"><rect width="${totalW}" height="${height}" rx="3" fill="#fff"/></clipPath>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${totalW}" height="28" viewBox="0 0 ${totalW} 28">
+  <clipPath id="r"><rect width="${totalW}" height="28" rx="3" fill="#fff"/></clipPath>
   <g clip-path="url(#r)">
-    <rect width="${labelW}" height="${height}" fill="#555"/>
-    <rect x="${labelW}" width="${msgW}" height="${height}" fill="${resolved}"/>
+    <rect width="${labelLen}" height="28" fill="#555"/>
+    <rect x="${labelLen}" width="${msgLen}" height="28" fill="${resolved}"/>
   </g>
-  <g fill="#fff" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="${fontSize}" font-weight="bold" text-anchor="middle">
-    <text x="${labelW / 2}" y="19">${escapeXml(labelUpper)}</text>
-    <text x="${labelW + msgW / 2}" y="19">${escapeXml(msgUpper)}</text>
+  <g fill="#fff" font-family="monospace" font-size="13" text-anchor="middle">
+    <text x="${labelLen / 2}" y="19">${escapeXml(label.toUpperCase())}</text>
+    <text x="${labelLen + msgLen / 2}" y="19">${escapeXml(message.toUpperCase())}</text>
   </g>
 </svg>`;
 	}
 
-	// flat / default style
 	return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${totalW}" height="${height}">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${totalW}" height="20" viewBox="0 0 ${totalW} 20">
   <linearGradient id="s" x2="0" y2="100%">
     <stop offset="0" stop-color="#fff" stop-opacity=".7"/>
     <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
   </linearGradient>
-  <clipPath id="r"><rect width="${totalW}" height="${height}" rx="3" fill="#fff"/></clipPath>
+  <clipPath id="r"><rect width="${totalW}" height="20" rx="3" fill="#fff"/></clipPath>
   <g clip-path="url(#r)">
-    <rect width="${labelW}" height="${height}" fill="#555"/>
-    <rect x="${labelW}" width="${msgW}" height="${height}" fill="${resolved}"/>
-    <rect width="${totalW}" height="${height}" fill="url(#s)"/>
+    <rect width="${labelLen}" height="20" fill="#555"/>
+    <rect x="${labelLen}" width="${msgLen}" height="20" fill="${resolved}"/>
+    <rect width="${totalW}" height="20" fill="url(#s)"/>
   </g>
-  <g fill="#fff" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="${fontSize}" text-anchor="middle">
-    <text x="${labelW / 2}" y="15">${escapeXml(label)}</text>
-    <text x="${labelW + msgW / 2}" y="15">${escapeXml(message)}</text>
+  <g fill="#fff" font-family="monospace" font-size="11" text-anchor="middle">
+    <text x="${labelLen / 2}" y="14">${escapeXml(label)}</text>
+    <text x="${labelLen + msgLen / 2}" y="14">${escapeXml(message)}</text>
   </g>
 </svg>`;
 }
