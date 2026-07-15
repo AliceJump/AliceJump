@@ -5,6 +5,7 @@
 
 export interface Env {
 	PROFILE_VIEWS: KVNamespace;
+	GITHUB_TOKEN?: string;
 }
 
 export default {
@@ -14,7 +15,7 @@ export default {
 		try {
 			if (path === '/typing-svg') return handleTypingSvg(url);
 			if (path.startsWith('/ghpvc/')) return handleViewsCounter(path, request, env);
-			if (path.startsWith('/badge/')) return handleBadge(url);
+			if (path.startsWith('/badge/')) return handleBadge(url, env);
 			return new Response('Not Found', { status: 404 });
 		} catch (err) {
 			return new Response(String(err), { status: 500 });
@@ -119,10 +120,10 @@ async function handleViewsCounter(path: string, request: Request, env: Env): Pro
 // 3. Badge API
 // =============================================================================
 
-function handleBadge(url: URL): Response {
+function handleBadge(url: URL, env: Env): Response {
 	const path = url.pathname;
 	const style = url.searchParams.get('style') || 'flat';
-	if (path.startsWith('/badge/github/')) return handleGitHubBadge(path, url);
+	if (path.startsWith('/badge/github/')) return handleGitHubBadge(path, url, env);
 
 	const parts = path.replace('/badge/', '').split('/');
 	let label = decodeURIComponent(parts[0] || 'custom').replace(/-/g, ' ');
@@ -137,14 +138,14 @@ function handleBadge(url: URL): Response {
 	});
 }
 
-async function handleGitHubBadge(path: string, url: URL): Promise<Response> {
+async function handleGitHubBadge(path: string, url: URL, env: Env): Promise<Response> {
 	const parts = path.replace('/badge/github/', '').split('/');
 	const type = parts[0], owner = parts[1] || '', repo = parts[2] || '';
 	const style = url.searchParams.get('style') || 'flat';
-	const data = owner ? await gh('/repos/' + owner + '/' + repo) : null;
+	const data = owner ? await gh('/repos/' + owner + '/' + repo, env) : null;
 
 	if (type === 'followers') {
-		const u = await gh('/users/' + owner);
+		const u = await gh('/users/' + owner, env);
 		if (u) return r('Followers', '' + (u.followers || 0), 'blue', style);
 	}
 	if (!data) return r('GitHub', 'error', 'red', style);
@@ -154,7 +155,7 @@ async function handleGitHubBadge(path: string, url: URL): Promise<Response> {
 		case 'forks': return r('Forks', '' + (data.forks_count || 0), 'blue', style);
 		case 'license': return r('License', data.license?.spdx_id || 'Unknown', 'green', style);
 		case 'last-commit': {
-			const c = await gh('/repos/' + owner + '/' + repo + '/commits?per_page=1');
+			const c = await gh('/repos/' + owner + '/' + repo + '/commits?per_page=1', env);
 			const d = c?.[0]?.commit?.committer?.date;
 			return r('Last commit', d ? ta(d) : 'unknown', 'brightgreen', style);
 		}
@@ -168,11 +169,11 @@ function r(l: string, m: string, c: string, s: string): Response {
 	});
 }
 
-async function gh(e: string): Promise<any> {
+async function gh(e: string, env: Env): Promise<any> {
 	try {
-		const r = await fetch('https://api.github.com' + e, {
-			headers: { 'User-Agent': 'alicejump-worker', 'Accept': 'application/vnd.github.v3+json' },
-		});
+		const headers: Record<string, string> = { 'User-Agent': 'alicejump-worker', 'Accept': 'application/vnd.github.v3+json' };
+		if (env.GITHUB_TOKEN) headers['Authorization'] = 'Bearer ' + env.GITHUB_TOKEN;
+		const r = await fetch('https://api.github.com' + e, { headers });
 		return r.ok ? await r.json() : null;
 	} catch { return null; }
 }
