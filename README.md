@@ -48,7 +48,7 @@
 </p>
 
 <p align="center">
-  <img src="https://graph.${ALICEJUMP_DOMAIN}/graph?username=AliceJump&theme=github-compact&hide_border=true" alt="Contribution graph" />
+  <img src="https://github-readme-activity-graph-beta-seven.vercel.app/graph?username=AliceJump&theme=github-compact&hide_border=true" alt="Contribution graph" />
 </p>
 
 ---
