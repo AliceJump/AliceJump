@@ -53,24 +53,37 @@ function handleTypingSvg(url: URL): Response {
 		? '<style>@import url("https://fonts.googleapis.com/css2?family=' + font.replace(/ /g, '+') + ':wght@' + weight + '&amp;display=swap");</style>'
 		: '';
 
+	const y = vCenter ? h / 2 : 20;
+	const cycle = n * (duration + pause);
+	const tx = center ? '50%' : '10';
+	const ta = center ? 'middle' : 'start';
+	const db = vCenter ? 'middle' : 'auto';
+
 	let d = '', b = '';
 	for (let i = 0; i < n; i++) {
-		const y = vCenter ? h / 2 : 20;
-		const lineStart = i * (duration + pause);
+		const tStart = i / n;              // 行开始
+		const tType = (i + 0.7) / n;       // 打字完成
+		const tPause = (i + 0.85) / n;     // 暂停结束
+		const tEnd = (i + 1) / n;          // 行结束
 
-		// clipPath: width 从 0 → fw (打字) → fw (暂停) → 0 (删除)
+		// clipPath: width 从 0 → fw → fw → 0
+		const k0 = tStart.toFixed(4), k1 = tType.toFixed(4), k2 = tPause.toFixed(4), k3 = tEnd.toFixed(4);
 		d += '<clipPath id="c' + i + '"><rect x="0" y="' + (y - size) + '" width="0" height="' + (size * 2) + '">'
 			+ '<animate attributeName="width" values="0;' + fw + ';' + fw + ';0"'
-			+ ' keyTimes="0;0.7;0.85;1" dur="' + (duration + pause) + 'ms"'
-			+ ' begin="' + lineStart + 'ms' + (repeat ? ';' + (lineStart + n * (duration + pause)) + 'ms' : '') + '"'
-			+ ' repeatCount="' + (repeat ? 'indefinite' : '1') + '"/>'
+			+ ' keyTimes="' + k0 + ';' + k1 + ';' + k2 + ';' + k3 + '"'
+			+ ' dur="' + cycle + 'ms" begin="0s" repeatCount="indefinite"/>'
 			+ '</rect></clipPath>';
 
-		// 文本
-		b += '<g clip-path="url(#c' + i + ')">'
-			+ '<text x="' + (center ? '50%' : '10') + '" y="' + y + '"'
-			+ ' text-anchor="' + (center ? 'middle' : 'start') + '"'
-			+ ' dominant-baseline="' + (vCenter ? 'middle' : 'auto') + '"'
+		// opacity: 仅在该行时间段内可见，消除重叠重影
+		const ok0 = k0, ok1 = (tStart + 0.001 / n).toFixed(4);
+		const ok2 = (tEnd - 0.001 / n).toFixed(4), ok3 = k3;
+		b += '<g clip-path="url(#c' + i + ')" opacity="0">'
+			+ '<animate attributeName="opacity"'
+			+ ' values="0;1;1;0"'
+			+ ' keyTimes="' + ok0 + ';' + ok1 + ';' + ok2 + ';' + ok3 + '"'
+			+ ' dur="' + cycle + 'ms" begin="0s" repeatCount="indefinite"/>'
+			+ '<text x="' + tx + '" y="' + y + '"'
+			+ ' text-anchor="' + ta + '" dominant-baseline="' + db + '"'
 			+ ' font-family="&quot;' + font + '&quot;, monospace"'
 			+ ' font-size="' + size + '" font-weight="' + weight + '"'
 			+ ' fill="' + tc + '">' + esc(lines[i])
