@@ -1,0 +1,120 @@
+# =============================================================================
+# 静态 SVG 卡片自动生成 Workflow
+# =============================================================================
+# 此 Action 定时生成以下静态 SVG 到仓库中，消除对外部 API 的依赖：
+#   1. Profile Summary Cards（5 种卡片）
+#   2. GitHub Stats Extended（统计卡片 + 语言卡片）
+#   3. GitHub Readme Streak Stats（连续贡献卡片）
+#
+# 工作原理：
+#   - 通过 GitHub Actions 调用各项目的官方 Action
+#   - 生成的 SVG 文件提交到仓库的 profile/ 目录
+#   - README 引用这些本地文件，不依赖任何外部 API
+# =============================================================================
+
+name: Generate Static Profile Cards
+
+on:
+  schedule:
+    # 每天 UTC 时间 3:00 执行（北京时间 11:00）
+    - cron: "0 3 * * *"
+  push:
+    paths:
+      - ".github/workflows/generate-static-cards.yml"
+      - "README.md"
+  workflow_dispatch:
+    # 允许手动触发
+
+# 最低权限原则
+permissions:
+  contents: write
+
+jobs:
+  generate-cards:
+    name: Generate SVG Cards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -----------------------------------------------------------------------
+      # 1. GitHub Profile Summary Cards
+      #    仓库: https://github.com/vn7n24fzkq/github-profile-summary-cards
+      #    输出: profile-summary-card-output/{theme}/*.svg
+      # -----------------------------------------------------------------------
+      - name: Generate Profile Summary Cards
+        uses: vn7n24fzkq/github-profile-summary-cards@release
+        env:
+          GITHUB_TOKEN: ${{ secrets.SUMMARY_GITHUB_TOKEN }}
+        with:
+          USERNAME: ${{ github.repository_owner }}
+          BRANCH_NAME: "main"
+          UTC_OFFSET: "8"
+          EXCLUDE: ""
+          AUTO_PUSH: false
+          THEME: "github"      # 使用 github 主题，与原 README 一致
+          ANIMATION: ""
+          DURATION: ""
+
+      # -----------------------------------------------------------------------
+      # 2. GitHub Stats Extended (github-readme-stats 的继任者)
+      #    仓库: https://github.com/stats-organization/github-stats-extended
+      #    使用 Action: https://github.com/stats-organization/github-readme-stats-action
+      # -----------------------------------------------------------------------
+      - name: Generate GitHub Stats Extended
+        uses: stats-organization/github-readme-stats-action@main
+        with:
+          username: ${{ github.repository_owner }}
+          github_token: ${{ secrets.SUMMARY_GITHUB_TOKEN }}
+          stat_options: "show_icons=true&hide_border=true"
+          top_language_options: "layout=compact&hide_border=true"
+          # 输出到 profile/stats/ 目录
+          output_dir: "profile/stats"
+
+      # -----------------------------------------------------------------------
+      # 3. GitHub Readme Streak Stats
+      #    仓库: https://github.com/DenverCoder1/github-readme-streak-stats
+      #    官方 Action: DenverCoder1/github-readme-streak-stats
+      # -----------------------------------------------------------------------
+      - name: Generate Streak Stats
+        uses: DenverCoder1/github-readme-streak-stats@main
+        with:
+          options: "user=${{ github.repository_owner }}&theme=transparent&hide_border=true"
+          path: "profile/streak.svg"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # -----------------------------------------------------------------------
+      # 4. 整理文件结构
+      #    将生成的卡片移到统一的 profile/ 目录
+      # -----------------------------------------------------------------------
+      - name: Organize generated files
+        run: |
+          mkdir -p profile/summary-cards
+
+          # 移动 Profile Summary Cards（从 profile-summary-card-output/）
+          if [ -d "profile-summary-card-output/github" ]; then
+            cp -r profile-summary-card-output/github/* profile/summary-cards/
+          fi
+
+          # 显示最终结构
+          echo "=== Profile directory structure ==="
+          find profile -type f | sort
+
+      # -----------------------------------------------------------------------
+      # 5. 提交生成的文件到仓库
+      # -----------------------------------------------------------------------
+      - name: Commit generated SVGs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # 添加所有生成的 SVG 文件
+          git add profile/ profile-summary-card-output/ 2>/dev/null || true
+
+          # 仅当有变更时提交
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update static profile cards [automated]"
+            git push
+          fi

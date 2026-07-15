@@ -1,0 +1,71 @@
+# =============================================================================
+# Caddy 反向代理配置 — AliceJump Profile README 自部署服务
+# =============================================================================
+# Caddy 自动处理 SSL/HTTPS，比 Nginx 更简洁
+# 使用方法:
+#   1. 替换 your-domain.com 为你的实际域名
+#   2. 将本文件命名为 Caddyfile
+#   3. caddy run 或放入 /etc/caddy/Caddyfile
+# =============================================================================
+
+your-domain.com {
+    # 全局安全头
+    header {
+        X-Frame-Options "SAMEORIGIN"
+        X-Content-Type-Options "nosniff"
+        X-XSS-Protection "1; mode=block"
+    }
+
+    # -------------------------------------------------------------------------
+    # 1. Readme Typing SVG
+    # -------------------------------------------------------------------------
+    handle_path /typing-svg/* {
+        reverse_proxy 127.0.0.1:8081
+        header /typing-svg/*.svg Cache-Control "public, max-age=3600"
+    }
+
+    # -------------------------------------------------------------------------
+    # 2. GitHub Profile Views Counter
+    # -------------------------------------------------------------------------
+    handle_path /ghpvc/* {
+        reverse_proxy 127.0.0.1:8082
+    }
+
+    # -------------------------------------------------------------------------
+    # 3. Shields.io Badges
+    # -------------------------------------------------------------------------
+    handle_path /badge/* {
+        reverse_proxy 127.0.0.1:8083
+        header Cache-Control "public, max-age=300"
+    }
+
+    # -------------------------------------------------------------------------
+    # 4. GitHub Readme Streak Stats
+    # -------------------------------------------------------------------------
+    handle_path /streak/* {
+        reverse_proxy 127.0.0.1:8084
+        header /streak/*.svg Cache-Control "public, max-age=3600"
+    }
+
+    # -------------------------------------------------------------------------
+    # 5. 静态资源（GitHub Actions 生成）
+    # -------------------------------------------------------------------------
+    handle_path /static/* {
+        root * /var/www/alicejump-static
+        file_server
+        header Cache-Control "public, max-age=3600"
+    }
+
+    # -------------------------------------------------------------------------
+    # 6. Activity Graph (Vercel 自部署，通过 CNAME 到 Vercel)
+    #    此路由仅在 Vercel 绑定自定义域名时使用
+    # -------------------------------------------------------------------------
+    # 如果 Activity Graph 部署到 Vercel 并绑定 your-domain.com:
+    # 需要单独的子域名，例如 graph.your-domain.com → CNAME → cname.vercel-dns.com
+    # 在 Caddy 中不需要为此服务配置路由
+
+    # 根路径返回 404
+    handle {
+        respond 404
+    }
+}

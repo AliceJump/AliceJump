@@ -1,0 +1,97 @@
+# =============================================================================
+# AliceJump Profile README — 自部署服务 Docker Compose
+# =============================================================================
+# 使用方法:
+#   git clone <各上游仓库> deploy/src/  (或运行 deploy/setup.sh)
+#   docker compose -f deploy/docker-compose.yml up -d --build
+#
+# 前置条件:
+#   - Docker 和 Docker Compose V2
+#   - 域名解析到服务器 IP
+#   - 反向代理 (Nginx/Caddy) 处理 HTTPS
+# =============================================================================
+
+networks:
+  alicejump-net:
+    driver: bridge
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # 1. Readme Typing SVG
+  #    GitHub: https://github.com/DenverCoder1/readme-typing-svg
+  #    Dockerfile: deploy/dockerfiles/typing-svg.Dockerfile
+  #    端口: 8081 → 80
+  # ---------------------------------------------------------------------------
+  typing-svg:
+    build:
+      context: deploy/dockerfiles
+      dockerfile: typing-svg.Dockerfile
+    image: alicejump/typing-svg:latest
+    container_name: aj-typing-svg
+    restart: unless-stopped
+    networks:
+      - alicejump-net
+    ports:
+      - "127.0.0.1:8081:80"
+
+  # ---------------------------------------------------------------------------
+  # 2. GitHub Profile Views Counter
+  #    Dockerfile: deploy/dockerfiles/views-counter.Dockerfile
+  #    端口: 8082 → 80 | 存储: SQLite / 可选 PostgreSQL
+  # ---------------------------------------------------------------------------
+  views-counter:
+    build:
+      context: deploy/dockerfiles
+      dockerfile: views-counter.Dockerfile
+    image: alicejump/views-counter:latest
+    container_name: aj-views-counter
+    restart: unless-stopped
+    networks:
+      - alicejump-net
+    ports:
+      - "127.0.0.1:8082:80"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - DB_CONNECTION=sqlite
+    volumes:
+      - views-counter-data:/app/storage
+
+  # ---------------------------------------------------------------------------
+  # 3. Shields.io Badges (官方 Docker 镜像)
+  #    端口: 8083 → 8080
+  # ---------------------------------------------------------------------------
+  shields:
+    image: shieldsio/shields:next
+    container_name: aj-shields
+    restart: unless-stopped
+    networks:
+      - alicejump-net
+    ports:
+      - "127.0.0.1:8083:8080"
+    environment:
+      - PORT=8080
+    env_file:
+      - path: .env
+        required: false
+
+  # ---------------------------------------------------------------------------
+  # 4. GitHub Readme Streak Stats (Docker 备用)
+  #    说明: 推荐用 GitHub Actions 生成静态 SVG，此 Docker 服务为备用 API
+  # ---------------------------------------------------------------------------
+  streak-stats:
+    build:
+      context: deploy/dockerfiles
+      dockerfile: streak-stats.Dockerfile
+    image: alicejump/streak-stats:latest
+    container_name: aj-streak-stats
+    restart: unless-stopped
+    networks:
+      - alicejump-net
+    ports:
+      - "127.0.0.1:8084:80"
+
+volumes:
+  views-counter-data:

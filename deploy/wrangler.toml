@@ -1,0 +1,22 @@
+# =============================================================================
+# Cloudflare Workers 配置 — Skill Icons 自部署
+# =============================================================================
+# 使用方法:
+#   1. Fork https://github.com/tandpfun/skill-icons
+#   2. 将本文件放入 fork 后的仓库根目录（覆盖原 wrangler.toml）
+#   3. 登录 Cloudflare: npx wrangler login
+#   4. 部署: npx wrangler deploy
+# =============================================================================
+
+name = "skill-icons"
+main = "index.js"
+compatibility_date = "2026-07-16"
+
+# 自定义域名 (替换为你的实际域名)
+# 在 Cloudflare Dashboard 添加 DNS 记录后取消注释并修改:
+# routes = [
+#   { pattern = "icons.your-domain.com/*", zone_name = "your-domain.com" }
+# ]
+
+# 如果不需要自定义域名，使用 workers.dev 子域名即可:
+workers_dev = true
