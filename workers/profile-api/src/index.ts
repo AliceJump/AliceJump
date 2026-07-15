@@ -38,90 +38,50 @@ function handleTypingSvg(url: URL): Response {
 	const center = url.searchParams.get('center') === 'true';
 	const vCenter = url.searchParams.get('vCenter') === 'true';
 	const repeat = url.searchParams.get('repeat') !== 'false';
-	const multiline = url.searchParams.get('multiline') === 'true';
-	const letterSpacing = url.searchParams.get('letterSpacing') || 'normal';
 	const w = parseInt(url.searchParams.get('width') || '0') || 0;
-	const h = parseInt(url.searchParams.get('height') || '0') || 0;
+	let h = parseInt(url.searchParams.get('height') || '0') || 0;
 
 	const lines = linesStr.split(';').map(l => l.replace(/\+/g, ' '));
-	const lastIdx = lines.length - 1;
-	const lineH = size + 5;
-
-	// 计算尺寸
-	const finalW = w || Math.max(...lines.map(l => l.length * size * 0.65)) + 40;
-	const finalH = h || (multiline ? (lines.length + 1) * lineH : size * 4);
-
-	// Google Fonts CSS
-	const fontCSS = font !== 'monospace'
+	const n = lines.length;
+	const finalW = w || Math.max(...lines.map(l => l.length * size * 0.65 | 0)) + 40;
+	if (!h) h = size * 4;
+	const fw = finalW - 20;
+	const tc = color.startsWith('#') ? color : '#' + color;
+	const bgc = bg.length === 9 && bg.endsWith('00') ? 'transparent' : (bg.startsWith('#') ? bg : '#' + bg);
+	const fc = font !== 'monospace'
 		? '<style>@import url("https://fonts.googleapis.com/css2?family=' + font.replace(/ /g, '+') + ':wght@' + weight + '&amp;display=swap");</style>'
 		: '';
 
-	// 背景色
-	const bgColor = bg.length === 9 && bg.endsWith('00') ? 'transparent' : (bg.startsWith('#') ? bg : '#' + bg);
+	let d = '', b = '';
+	for (let i = 0; i < n; i++) {
+		const y = vCenter ? h / 2 : 20;
+		const lineStart = i * (duration + pause);
 
-	let svgContent = '';
+		// clipPath: width 从 0 → fw (打字) → fw (暂停) → 0 (删除)
+		d += '<clipPath id="c' + i + '"><rect x="0" y="' + (y - size) + '" width="0" height="' + (size * 2) + '">'
+			+ '<animate attributeName="width" values="0;' + fw + ';' + fw + ';0"'
+			+ ' keyTimes="0;0.7;0.85;1" dur="' + (duration + pause) + 'ms"'
+			+ ' begin="' + lineStart + 'ms' + (repeat ? ';' + (lineStart + n * (duration + pause)) + 'ms' : '') + '"'
+			+ ' repeatCount="' + (repeat ? 'indefinite' : '1') + '"/>'
+			+ '</rect></clipPath>';
 
-	for (let i = 0; i <= lastIdx; i++) {
-		const yOffset = multiline ? (i + 1) * lineH : finalH / 2;
-		const lineDur = multiline
-			? (duration + pause) * (i + 1)
-			: duration + pause;
-		const emptyLine = 'm0,' + yOffset + ' h0';
-		const fullLine = 'm0,' + yOffset + ' h' + finalW;
-
-		let begin: string;
-		let values: string[];
-		let keyTimes: string[];
-		let fill: string;
-
-		if (multiline) {
-			begin = '0s' + (repeat ? ';d' + lastIdx + '.end' : '');
-			values = [emptyLine, emptyLine, fullLine, fullLine];
-			keyTimes = ['0', '' + (i / (i + 1)), '' + ((i / (i + 1)) + duration / lineDur), '1'];
-			fill = 'freeze';
-		} else {
-			begin = i === 0 ? '0s' : 'd' + (i - 1) + '.end';
-			if (repeat) begin += ';d' + lastIdx + '.end';
-			const freeze = !repeat && i === lastIdx;
-			values = [emptyLine, fullLine, fullLine, freeze ? fullLine : emptyLine];
-			keyTimes = ['0', '' + (0.8 * duration / (duration + pause)), '' + ((0.8 * duration + pause) / (duration + pause)), '1'];
-			fill = freeze ? 'freeze' : 'remove';
-		}
-
-		svgContent += '<path id="d' + i + '">'
-			+ '<animate attributeName="d"'
-			+ ' begin="' + begin + '"'
-			+ ' dur="' + lineDur + 'ms"'
-			+ ' fill="' + fill + '"'
-			+ ' values="' + values.join(' ; ') + '"'
-			+ ' keyTimes="' + keyTimes.join(';') + '"/>'
-			+ '</path>'
-			+ '<text font-family="&quot;' + font + '&quot;, monospace"'
-			+ ' fill="' + (color.startsWith('#') ? color : '#' + color) + '"'
-			+ ' font-size="' + size + '"'
-			+ ' font-weight="' + weight + '"'
-			+ ' dominant-baseline="' + (vCenter ? 'middle' : 'auto') + '"'
-			+ ' x="' + (center ? '50%' : '0%') + '"'
+		// 文本
+		b += '<g clip-path="url(#c' + i + ')">'
+			+ '<text x="' + (center ? '50%' : '10') + '" y="' + y + '"'
 			+ ' text-anchor="' + (center ? 'middle' : 'start') + '"'
-			+ ' letter-spacing="' + letterSpacing + '">'
-			+ '<textPath href="#d' + i + '">'
-			+ esc(lines[i])
-			+ '</textPath>'
-			+ '</text>';
+			+ ' dominant-baseline="' + (vCenter ? 'middle' : 'auto') + '"'
+			+ ' font-family="&quot;' + font + '&quot;, monospace"'
+			+ ' font-size="' + size + '" font-weight="' + weight + '"'
+			+ ' fill="' + tc + '">' + esc(lines[i])
+			+ '</text></g>';
 	}
 
-	const svg = '<svg xmlns="http://www.w3.org/2000/svg"'
-		+ ' xmlns:xlink="http://www.w3.org/1999/xlink"'
-		+ ' viewBox="0 0 ' + finalW + ' ' + finalH + '"'
-		+ ' style="background-color: ' + bgColor + ';"'
-		+ ' width="' + finalW + 'px" height="' + finalH + 'px">'
-		+ fontCSS
-		+ svgContent
-		+ '</svg>';
-
-	return new Response(svg, {
-		headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'no-cache' },
-	});
+	return new Response(
+		'<svg xmlns="http://www.w3.org/2000/svg" width="' + finalW + '" height="' + h + '"'
+		+ ' viewBox="0 0 ' + finalW + ' ' + h + '" style="background-color:' + bgc + '">'
+		+ fc + d + b + '</svg>',
+		{ headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'no-cache' } }
+	);
 }
 
 function esc(s: string): string {
@@ -239,7 +199,7 @@ function badge(label: string, msg: string, color: string, style: string): string
 	const c = rc(color), lw = label.length * 7 + 16, mw = msg.length * 7 + 16, tw = lw + mw;
 	if (style === 'for-the-badge') {
 		return '<svg xmlns="http://www.w3.org/2000/svg" width="' + tw + '" height="20">'
-			+ e('<clipPath id="r"><rect width="' + tw + '" height="20" rx="3"/></clipPath>'
+			+ '<clipPath id="r"><rect width="' + tw + '" height="20" rx="3"/></clipPath>'
 			+ '<g clip-path="url(#r)">'
 			+ '<rect width="' + lw + '" height="20" fill="#555"/>'
 			+ '<rect x="' + lw + '" width="' + mw + '" height="20" fill="' + c + '"/>'
@@ -247,10 +207,10 @@ function badge(label: string, msg: string, color: string, style: string): string
 			+ '<g fill="#fff" font-family="Verdana,sans-serif" font-size="11" text-anchor="middle">'
 			+ '<text x="' + (lw / 2) + '" y="14">' + label + '</text>'
 			+ '<text x="' + (lw + mw / 2) + '" y="14">' + msg + '</text>'
-			+ '</g></svg>');
+			+ '</g></svg>';
 	}
 	return '<svg xmlns="http://www.w3.org/2000/svg" width="' + tw + '" height="20">'
-		+ e('<linearGradient id="s" x2="0" y2="100%">'
+		+ '<linearGradient id="s" x2="0" y2="100%">'
 		+ '<stop offset="0" stop-color="#fff" stop-opacity=".7"/>'
 		+ '<stop offset="100%" stop-color="#fff" stop-opacity="0"/>'
 		+ '</linearGradient>'
@@ -260,10 +220,10 @@ function badge(label: string, msg: string, color: string, style: string): string
 		+ '<rect x="' + lw + '" width="' + mw + '" height="20" fill="' + c + '"/>'
 		+ '<rect width="' + tw + '" height="20" fill="url(#s)"/>'
 		+ '</g>'
-		+ '<g fill="#fff" font-family="monospace" font-size="11" text-anchor="middle">'
+		+ '<g fill="#fff" font-family="Verdana,sans-serif" font-size="11" text-anchor="middle">'
 		+ '<text x="' + (lw / 2) + '" y="14">' + label + '</text>'
 		+ '<text x="' + (lw + mw / 2) + '" y="14">' + msg + '</text>'
-		+ '</g></svg>');
+		+ '</g></svg>';
 }
 
 function e(s: string): string {
