@@ -238,15 +238,15 @@ function rc(c: string): string { return C[c.toLowerCase()] || (c.startsWith('#')
 function badge(label: string, msg: string, color: string, style: string): string {
 	const c = rc(color), lw = label.length * 7 + 16, mw = msg.length * 7 + 16, tw = lw + mw;
 	if (style === 'for-the-badge') {
-		return '<svg xmlns="http://www.w3.org/2000/svg" width="' + tw + '" height="28">'
-			+ e('<clipPath id="r"><rect width="' + tw + '" height="28" rx="3"/></clipPath>'
+		return '<svg xmlns="http://www.w3.org/2000/svg" width="' + tw + '" height="20">'
+			+ e('<clipPath id="r"><rect width="' + tw + '" height="20" rx="3"/></clipPath>'
 			+ '<g clip-path="url(#r)">'
-			+ '<rect width="' + lw + '" height="28" fill="#555"/>'
-			+ '<rect x="' + lw + '" width="' + mw + '" height="28" fill="' + c + '"/>'
+			+ '<rect width="' + lw + '" height="20" fill="#555"/>'
+			+ '<rect x="' + lw + '" width="' + mw + '" height="20" fill="' + c + '"/>'
 			+ '</g>'
-			+ '<g fill="#fff" font-family="monospace" font-size="13" text-anchor="middle">'
-			+ '<text x="' + (lw / 2) + '" y="19">' + label.toUpperCase() + '</text>'
-			+ '<text x="' + (lw + mw / 2) + '" y="19">' + msg.toUpperCase() + '</text>'
+			+ '<g fill="#fff" font-family="Verdana,sans-serif" font-size="11" text-anchor="middle">'
+			+ '<text x="' + (lw / 2) + '" y="14">' + label + '</text>'
+			+ '<text x="' + (lw + mw / 2) + '" y="14">' + msg + '</text>'
 			+ '</g></svg>');
 	}
 	return '<svg xmlns="http://www.w3.org/2000/svg" width="' + tw + '" height="20">'
