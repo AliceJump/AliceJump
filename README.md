@@ -3,9 +3,9 @@
   AliceJump GitHub Profile README
   Dynamic services:
   - github-readme-stats-alpha-nine-65.vercel.app = 自部署 Vercel 实例 (已配置)
-  - ${ALICEJUMP_DOMAIN}                         = 自部署 Docker 主域名
-  - graph.${ALICEJUMP_DOMAIN}                   = 自部署 Vercel (Activity Graph)
-  - icons.${ALICEJUMP_DOMAIN}                   = 自部署 CF Workers (Skill Icons)
+  - alicejump-profile-api.2630923991.workers.dev  = Cloudflare Workers (Typing SVG / ghpvc / Badge)
+  - skill-icons.2630923991.workers.dev            = Cloudflare Workers (Skill Icons)
+  - github-readme-activity-graph-beta-seven.vercel.app  = Vercel (Activity Graph)
   - ./profile/*.svg                             = GitHub Actions 生成静态文件
 ================================================================================
 -->
@@ -17,7 +17,7 @@
 <h1 align="center">AliceJump</h1>
 
 <p align="center">
-  <img src="https://${ALICEJUMP_DOMAIN}/typing-svg?font=Fira+Code&weight=600&size=22&pause=1200&center=true&vCenter=true&width=520&lines=Solve+Problems;Not+Showcase+Technology;Build+Useful+Automation" />
+  <img src="https://alicejump-profile-api.2630923991.workers.dev/typing-svg?text=Solve+Problems;Not+Showcase+Technology;Build+Useful+Automation&font=Fira+Code&size=22&color=36BCF7" />
 </p>
 
 <p align="center">
@@ -28,10 +28,10 @@
 > 这里用于展示个人项目、开源实践和一些持续变化的动态数据。
 
 <p align="center">
-  <img src="https://${ALICEJUMP_DOMAIN}/ghpvc/?username=AliceJump&style=for-the-badge" alt="Profile views" />
-  <img src="https://${ALICEJUMP_DOMAIN}/badge/github/followers/AliceJump?style=for-the-badge&label=Followers" alt="Followers" />
-  <img src="https://${ALICEJUMP_DOMAIN}/badge/github/stars/AliceJump?affiliations=OWNER&style=for-the-badge&label=Total%20Stars" alt="Total stars" />
-  <img src="https://${ALICEJUMP_DOMAIN}/badge/static/v1?label=Status&message=Actively%20building&color=2ea043&style=for-the-badge" alt="Status" />
+  <img src="https://alicejump-profile-api.2630923991.workers.dev/ghpvc/AliceJump?style=for-the-badge" alt="Profile views" />
+  <img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/followers/AliceJump?style=for-the-badge" alt="Followers" />
+  <img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/stars/AliceJump?affiliations=OWNER&style=for-the-badge" alt="Total stars" />
+  <img src="https://alicejump-profile-api.2630923991.workers.dev/badge/Status/Actively%20building/2ea043?style=for-the-badge" alt="Status" />
 </p>
 
 <p align="center">
@@ -95,10 +95,10 @@
 
 ## ok-end-field
 
-[![Stars](https://${ALICEJUMP_DOMAIN}/badge/github/stars/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field)
-[![Forks](https://${ALICEJUMP_DOMAIN}/badge/github/forks/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field)
-[![Last Commit](https://${ALICEJUMP_DOMAIN}/badge/github/last-commit/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field)
-[![License](https://${ALICEJUMP_DOMAIN}/badge/github/license/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field/blob/main/LICENSE)
+[![Stars](https://alicejump-profile-api.2630923991.workers.dev/badge/github/stars/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field)
+[![Forks](https://alicejump-profile-api.2630923991.workers.dev/badge/github/forks/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field)
+[![Last Commit](https://alicejump-profile-api.2630923991.workers.dev/badge/github/last-commit/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field)
+[![License](https://alicejump-profile-api.2630923991.workers.dev/badge/github/license/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field/blob/main/LICENSE)
 
 > 终末地自动化工具
 
@@ -106,10 +106,10 @@
 
 ## ok-gf2
 
-[![Stars](https://${ALICEJUMP_DOMAIN}/badge/github/stars/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2)
-[![Forks](https://${ALICEJUMP_DOMAIN}/badge/github/forks/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2)
-[![Last Commit](https://${ALICEJUMP_DOMAIN}/badge/github/last-commit/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2)
-[![License](https://${ALICEJUMP_DOMAIN}/badge/github/license/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2/blob/main/LICENSE)
+[![Stars](https://alicejump-profile-api.2630923991.workers.dev/badge/github/stars/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2)
+[![Forks](https://alicejump-profile-api.2630923991.workers.dev/badge/github/forks/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2)
+[![Last Commit](https://alicejump-profile-api.2630923991.workers.dev/badge/github/last-commit/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2)
+[![License](https://alicejump-profile-api.2630923991.workers.dev/badge/github/license/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2/blob/main/LICENSE)
 
 > 少女前线2自动化工具  
 
@@ -144,5 +144,5 @@
 
 ---
 
-> **部署说明**: `${ALICEJUMP_DOMAIN}` 替换为 Docker 自部署主域名，统计卡片保留 `alpha-nine-65.vercel.app`。
-> 完整部署文档参见 [`deploy/`](./deploy/) 目录。
+> **部署说明**: 所有动态服务已迁移到 Cloudflare Workers + Vercel，无需自备服务器。
+> 完整部署文档参见 [`deploy/`](./deploy/) · [`workers/`](./workers/) 目录。

@@ -1,0 +1,25 @@
+# Node.js
+node_modules/
+npm-debug.log*
+package-lock.json
+yarn.lock
+yarn-error.log
+
+# Build outputs
+dist/
+*.svg
+*.png
+*.jpg
+
+# Wrangler
+.wrangler/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

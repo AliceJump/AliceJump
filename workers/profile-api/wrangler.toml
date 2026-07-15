@@ -1,0 +1,8 @@
+name = "alicejump-profile-api"
+main = "src/index.ts"
+compatibility_date = "2026-07-15"
+workers_dev = true
+
+[[kv_namespaces]]
+binding = "PROFILE_VIEWS"
+id = "388fb4d203bf4584affe17745295a0b4"
