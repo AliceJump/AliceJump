@@ -17,7 +17,7 @@
 <h1 align="center">AliceJump</h1>
 
 <p align="center">
-  <img src="https://alicejump-profile-api.2630923991.workers.dev/typing-svg?text=Solve+Problems;Not+Showcase+Technology;Build+Useful+Automation&font=Fira+Code&size=22&color=36BCF7" />
+  <img src="https://alicejump-profile-api.2630923991.workers.dev/typing-svg?font=Fira+Code&weight=600&size=22&pause=1200&center=true&vCenter=true&width=520&lines=Solve+Problems;Not+Showcase+Technology;Build+Useful+Automation" />
 </p>
 
 <p align="center">

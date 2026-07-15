@@ -1,7 +1,6 @@
 /**
  * AliceJump Profile API — Cloudflare Workers
- *
- * 统一提供 Typing SVG、Views Counter、Badge 三项服务。
+ * Typing SVG 使用与原版 readme-typing-svg 相同的 path 动画方案
  */
 
 export interface Env {
@@ -12,7 +11,6 @@ export default {
 	async fetch(request: Request, env: Env): Promise<Response> {
 		const url = new URL(request.url);
 		const path = url.pathname;
-
 		try {
 			if (path === '/typing-svg') return handleTypingSvg(url);
 			if (path.startsWith('/ghpvc/')) return handleViewsCounter(path, request, env);
@@ -25,56 +23,104 @@ export default {
 };
 
 // =============================================================================
-// 1. Typing SVG — 逐字出现动画
+// 1. Typing SVG — 使用 SVG Path 动画实现原版效果
 // =============================================================================
 
 function handleTypingSvg(url: URL): Response {
-	const text = url.searchParams.get('text') || 'Hello World';
+	const linesStr = url.searchParams.get('lines') || 'Hello World';
 	const font = url.searchParams.get('font') || 'monospace';
 	const size = parseInt(url.searchParams.get('size') || '20');
-	const color = url.searchParams.get('color') || '36BCF7';
-	const bg = url.searchParams.get('background') || '00000000';
+	const color = url.searchParams.get('color') || '#36BCF7';
+	const bg = url.searchParams.get('background') || '#00000000';
+	const duration = parseInt(url.searchParams.get('duration') || '5000');
+	const pause = parseInt(url.searchParams.get('pause') || '0');
+	const weight = url.searchParams.get('weight') || '400';
+	const center = url.searchParams.get('center') === 'true';
+	const vCenter = url.searchParams.get('vCenter') === 'true';
+	const repeat = url.searchParams.get('repeat') !== 'false';
+	const multiline = url.searchParams.get('multiline') === 'true';
+	const letterSpacing = url.searchParams.get('letterSpacing') || 'normal';
+	const w = parseInt(url.searchParams.get('width') || '0') || 0;
+	const h = parseInt(url.searchParams.get('height') || '0') || 0;
 
-	const lines = text.split(';');
-	const charW = size * 0.6;
-	const lineH = size * 1.5;
-	const maxLen = Math.max(...lines.map(l => l.length));
-	const w = Math.max(maxLen * charW + 40, 200);
-	const h = Math.max(lines.length * lineH + 30, 50);
+	const lines = linesStr.split(';').map(l => l.replace(/\+/g, ' '));
+	const lastIdx = lines.length - 1;
+	const lineH = size + 5;
 
-	let body = '';
+	// 计算尺寸
+	const finalW = w || Math.max(...lines.map(l => l.length * size * 0.65)) + 40;
+	const finalH = h || (multiline ? (lines.length + 1) * lineH : size * 4);
 
-	lines.forEach((line, li) => {
-		const y = 28 + li * lineH;
-		const lineDelay = li * 2;
+	// Google Fonts CSS
+	const fontCSS = font !== 'monospace'
+		? '<style>@import url("https://fonts.googleapis.com/css2?family=' + font.replace(/ /g, '+') + ':wght@' + weight + '&display=swap");</style>'
+		: '';
 
-		line.split('').forEach((ch, ci) => {
-			const d = (lineDelay + ci * 0.08).toFixed(3);
-			body += '<tspan opacity="0">'
-				+ '<animate attributeName="opacity" from="0" to="1"'
-				+ ' begin="' + d + 's" dur="0.01s" fill="freeze"/>'
-				+ esc(ch) + '</tspan>';
-		});
+	// 背景色
+	const bgColor = bg.length === 9 && bg.endsWith('00') ? 'transparent' : (bg.startsWith('#') ? bg : '#' + bg);
 
-		const cd = (lineDelay + line.length * 0.08 + 0.5).toFixed(3);
-		body += '<tspan fill="#' + color + '" opacity="0">'
-			+ '<animate attributeName="opacity" from="0" to="1"'
-			+ ' begin="' + cd + 's" dur="0.01s" fill="freeze"/>'
-			+ '<animate attributeName="opacity" values="1;0;1" dur="0.8s"'
-			+ ' begin="' + cd + 's" repeatCount="indefinite"/>'
-			+ '\u258c</tspan>';
-	});
+	let svgContent = '';
+
+	for (let i = 0; i <= lastIdx; i++) {
+		const yOffset = multiline ? (i + 1) * lineH : finalH / 2;
+		const lineDur = multiline
+			? (duration + pause) * (i + 1)
+			: duration + pause;
+		const emptyLine = 'm0,' + yOffset + ' h0';
+		const fullLine = 'm0,' + yOffset + ' h' + finalW;
+
+		let begin: string;
+		let values: string[];
+		let keyTimes: string[];
+		let fill: string;
+
+		if (multiline) {
+			begin = '0s' + (repeat ? ';d' + lastIdx + '.end' : '');
+			values = [emptyLine, emptyLine, fullLine, fullLine];
+			keyTimes = ['0', '' + (i / (i + 1)), '' + ((i / (i + 1)) + duration / lineDur), '1'];
+			fill = 'freeze';
+		} else {
+			begin = i === 0 ? '0s' : 'd' + (i - 1) + '.end';
+			if (repeat) begin += ';d' + lastIdx + '.end';
+			const freeze = !repeat && i === lastIdx;
+			values = [emptyLine, fullLine, fullLine, freeze ? fullLine : emptyLine];
+			keyTimes = ['0', '' + (0.8 * duration / (duration + pause)), '' + ((0.8 * duration + pause) / (duration + pause)), '1'];
+			fill = freeze ? 'freeze' : 'remove';
+		}
+
+		svgContent += '<path id="d' + i + '">'
+			+ '<animate attributeName="d"'
+			+ ' begin="' + begin + '"'
+			+ ' dur="' + lineDur + 'ms"'
+			+ ' fill="' + fill + '"'
+			+ ' values="' + values.join(' ; ') + '"'
+			+ ' keyTimes="' + keyTimes.join(';') + '"/>'
+			+ '</path>'
+			+ '<text font-family="&quot;' + font + '&quot;, monospace"'
+			+ ' fill="' + (color.startsWith('#') ? color : '#' + color) + '"'
+			+ ' font-size="' + size + '"'
+			+ ' font-weight="' + weight + '"'
+			+ ' dominant-baseline="' + (vCenter ? 'middle' : 'auto') + '"'
+			+ ' x="' + (center ? '50%' : '0%') + '"'
+			+ ' text-anchor="' + (center ? 'middle' : 'start') + '"'
+			+ ' letter-spacing="' + letterSpacing + '">'
+			+ '<textPath href="#d' + i + '">'
+			+ esc(lines[i])
+			+ '</textPath>'
+			+ '</text>';
+	}
 
 	const svg = '<svg xmlns="http://www.w3.org/2000/svg"'
-		+ ' width="' + w + '" height="' + h + '"'
-		+ ' viewBox="0 0 ' + w + ' ' + h + '">'
-		+ '<rect width="100%" height="100%" fill="#' + bg + '" rx="5"/>'
-		+ '<text x="20" y="40" font-family="' + font + ',monospace"'
-		+ ' font-size="' + size + '" fill="#' + color + '">'
-		+ body + '</text></svg>';
+		+ ' xmlns:xlink="http://www.w3.org/1999/xlink"'
+		+ ' viewBox="0 0 ' + finalW + ' ' + finalH + '"'
+		+ ' style="background-color: ' + bgColor + ';"'
+		+ ' width="' + finalW + 'px" height="' + finalH + 'px">'
+		+ fontCSS
+		+ svgContent
+		+ '</svg>';
 
 	return new Response(svg, {
-		headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'public, max-age=3600' },
+		headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'no-cache' },
 	});
 }
 
@@ -95,18 +141,16 @@ async function handleViewsCounter(path: string, request: Request, env: Env): Pro
 	const style = params.get('style') || 'flat';
 	const label = params.get('label') || 'Profile views';
 	const base = parseInt(params.get('base') || '0', 10);
-
 	const key = 'views:' + username;
+
 	let count: number;
 	try {
 		count = (await env.PROFILE_VIEWS.get(key, 'json') as number) || 0;
 		count += 1;
 		await env.PROFILE_VIEWS.put(key, JSON.stringify(count));
-	} catch {
-		count = 0;
-	}
+	} catch { count = 0; }
 
-	return new Response(buildBadge(label, String(count + base), color, style), {
+	return new Response(badge(label, String(count + base), color, style), {
 		headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'no-cache' },
 	});
 }
@@ -117,19 +161,16 @@ async function handleViewsCounter(path: string, request: Request, env: Env): Pro
 
 function handleBadge(url: URL): Response {
 	const path = url.pathname;
-	const parts = path.replace('/badge/', '').split('/');
 	const style = url.searchParams.get('style') || 'flat';
-
 	if (path.startsWith('/badge/github/')) return handleGitHubBadge(path, url);
 
-	let label = parts[0] || 'custom';
-	let msg = parts[1] || 'unknown';
-	let color = parts[2] || 'brightgreen';
+	const parts = path.replace('/badge/', '').split('/');
+	let label = parts[0] || 'custom', msg = parts[1] || 'unknown', color = parts[2] || 'brightgreen';
 	if (url.searchParams.has('label')) label = url.searchParams.get('label')!;
 	if (url.searchParams.has('message')) msg = url.searchParams.get('message')!;
 	if (url.searchParams.has('color')) color = url.searchParams.get('color')!;
 
-	return new Response(buildBadge(label, msg, color, style), {
+	return new Response(badge(label, msg, color, style), {
 		headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'public, max-age=300' },
 	});
 }
@@ -138,44 +179,43 @@ async function handleGitHubBadge(path: string, url: URL): Promise<Response> {
 	const parts = path.replace('/badge/github/', '').split('/');
 	const type = parts[0], owner = parts[1] || '', repo = parts[2] || '';
 	const style = url.searchParams.get('style') || 'flat';
-	const data = owner ? await ghFetch('/repos/' + owner + '/' + repo) : null;
+	const data = owner ? await gh('/repos/' + owner + '/' + repo) : null;
 
 	if (type === 'followers') {
-		const u = await ghFetch('/users/' + owner);
-		if (u) return respond('Followers', '' + (u.followers || 0), 'blue', style);
+		const u = await gh('/users/' + owner);
+		if (u) return r('Followers', '' + (u.followers || 0), 'blue', style);
 	}
-
-	if (!data) return respond('GitHub', 'error', 'red', style);
+	if (!data) return r('GitHub', 'error', 'red', style);
 
 	switch (type) {
-		case 'stars': return respond('Stars', '' + (data.stargazers_count || 0), 'brightgreen', style);
-		case 'forks': return respond('Forks', '' + (data.forks_count || 0), 'blue', style);
-		case 'license': return respond('License', data.license?.spdx_id || 'Unknown', 'green', style);
+		case 'stars': return r('Stars', '' + (data.stargazers_count || 0), 'brightgreen', style);
+		case 'forks': return r('Forks', '' + (data.forks_count || 0), 'blue', style);
+		case 'license': return r('License', data.license?.spdx_id || 'Unknown', 'green', style);
 		case 'last-commit': {
-			const commits = await ghFetch('/repos/' + owner + '/' + repo + '/commits?per_page=1');
-			const date = commits?.[0]?.commit?.committer?.date;
-			return respond('Last commit', date ? timeAgo(date) : 'unknown', 'brightgreen', style);
+			const c = await gh('/repos/' + owner + '/' + repo + '/commits?per_page=1');
+			const d = c?.[0]?.commit?.committer?.date;
+			return r('Last commit', d ? ta(d) : 'unknown', 'brightgreen', style);
 		}
-		default: return respond('GitHub', 'unknown', 'grey', style);
+		default: return r('GitHub', 'unknown', 'grey', style);
 	}
 }
 
-function respond(label: string, msg: string, color: string, style: string): Response {
-	return new Response(buildBadge(label, msg, color, style), {
+function r(l: string, m: string, c: string, s: string): Response {
+	return new Response(badge(l, m, c, s), {
 		headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'public, max-age=3600' },
 	});
 }
 
-async function ghFetch(endpoint: string): Promise<any> {
+async function gh(e: string): Promise<any> {
 	try {
-		const resp = await fetch('https://api.github.com' + endpoint, {
+		const r = await fetch('https://api.github.com' + e, {
 			headers: { 'User-Agent': 'alicejump-worker', 'Accept': 'application/vnd.github.v3+json' },
 		});
-		return resp.ok ? await resp.json() : null;
+		return r.ok ? await r.json() : null;
 	} catch { return null; }
 }
 
-function timeAgo(s: string): string {
+function ta(s: string): string {
 	const d = Math.floor((Date.now() - new Date(s).getTime()) / 1000);
 	if (d < 60) return 'just now';
 	if (d < 3600) return Math.floor(d / 60) + 'm ago';
@@ -188,37 +228,29 @@ function timeAgo(s: string): string {
 // SVG Badge
 // =============================================================================
 
-const CM: Record<string, string> = {
+const C: Record<string, string> = {
 	brightgreen: '#44CC11', green: '#97CA00', yellow: '#DFB317',
 	yellowgreen: '#A4A61D', orange: '#FE7D37', red: '#E05D44',
 	blue: '#007EC6', grey: '#555', lightgrey: '#9f9f9f',
 };
+function rc(c: string): string { return C[c.toLowerCase()] || (c.startsWith('#') ? c : '#' + c); }
 
-function rc(c: string): string {
-	return CM[c.toLowerCase()] || (c.startsWith('#') ? c : '#' + c);
-}
-
-function buildBadge(label: string, msg: string, color: string, style: string): string {
-	const c = rc(color);
-	const lw = label.length * 7 + 16;
-	const mw = msg.length * 7 + 16;
-	const tw = lw + mw;
-
+function badge(label: string, msg: string, color: string, style: string): string {
+	const c = rc(color), lw = label.length * 7 + 16, mw = msg.length * 7 + 16, tw = lw + mw;
 	if (style === 'for-the-badge') {
 		return '<svg xmlns="http://www.w3.org/2000/svg" width="' + tw + '" height="28">'
-			+ '<clipPath id="r"><rect width="' + tw + '" height="28" rx="3"/></clipPath>'
+			+ e('<clipPath id="r"><rect width="' + tw + '" height="28" rx="3"/></clipPath>'
 			+ '<g clip-path="url(#r)">'
 			+ '<rect width="' + lw + '" height="28" fill="#555"/>'
 			+ '<rect x="' + lw + '" width="' + mw + '" height="28" fill="' + c + '"/>'
 			+ '</g>'
 			+ '<g fill="#fff" font-family="monospace" font-size="13" text-anchor="middle">'
-			+ '<text x="' + (lw / 2) + '" y="19">' + esc(label.toUpperCase()) + '</text>'
-			+ '<text x="' + (lw + mw / 2) + '" y="19">' + esc(msg.toUpperCase()) + '</text>'
-			+ '</g></svg>';
+			+ '<text x="' + (lw / 2) + '" y="19">' + label.toUpperCase() + '</text>'
+			+ '<text x="' + (lw + mw / 2) + '" y="19">' + msg.toUpperCase() + '</text>'
+			+ '</g></svg>');
 	}
-
 	return '<svg xmlns="http://www.w3.org/2000/svg" width="' + tw + '" height="20">'
-		+ '<linearGradient id="s" x2="0" y2="100%">'
+		+ e('<linearGradient id="s" x2="0" y2="100%">'
 		+ '<stop offset="0" stop-color="#fff" stop-opacity=".7"/>'
 		+ '<stop offset="100%" stop-color="#fff" stop-opacity="0"/>'
 		+ '</linearGradient>'
@@ -229,7 +261,11 @@ function buildBadge(label: string, msg: string, color: string, style: string): s
 		+ '<rect width="' + tw + '" height="20" fill="url(#s)"/>'
 		+ '</g>'
 		+ '<g fill="#fff" font-family="monospace" font-size="11" text-anchor="middle">'
-		+ '<text x="' + (lw / 2) + '" y="14">' + esc(label) + '</text>'
-		+ '<text x="' + (lw + mw / 2) + '" y="14">' + esc(msg) + '</text>'
-		+ '</g></svg>';
+		+ '<text x="' + (lw / 2) + '" y="14">' + label + '</text>'
+		+ '<text x="' + (lw + mw / 2) + '" y="14">' + msg + '</text>'
+		+ '</g></svg>');
+}
+
+function e(s: string): string {
+	return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
