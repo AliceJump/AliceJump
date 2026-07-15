@@ -61,27 +61,23 @@ function handleTypingSvg(url: URL): Response {
 
 	let d = '', b = '';
 	for (let i = 0; i < n; i++) {
-		const tStart = i / n;              // 行开始
-		const tType = (i + 0.7) / n;       // 打字完成
-		const tPause = (i + 0.85) / n;     // 暂停结束
-		const tEnd = (i + 1) / n;          // 行结束
+		const tS = i / n, tT = (i + 0.7) / n, tP = (i + 0.85) / n, tE = (i + 1) / n;
+		const s = tS.toFixed(4), t = tT.toFixed(4), p = tP.toFixed(4), e = tE.toFixed(4);
 
-		// clipPath: width 从 0 → fw → fw → 0
-		const k0 = tStart.toFixed(4), k1 = tType.toFixed(4), k2 = tPause.toFixed(4), k3 = tEnd.toFixed(4);
+		// clipPath: 0→0→fw→fw→0→0 (始终以 0 开头 1 结尾)
 		d += '<clipPath id="c' + i + '"><rect x="0" y="' + (y - size) + '" width="0" height="' + (size * 2) + '">'
-			+ '<animate attributeName="width" values="0;' + fw + ';' + fw + ';0"'
-			+ ' keyTimes="' + k0 + ';' + k1 + ';' + k2 + ';' + k3 + '"'
-			+ ' dur="' + cycle + 'ms" begin="0s" repeatCount="indefinite"/>'
+			+ '<animate attributeName="width" values="0;0;' + fw + ';' + fw + ';0;0"'
+			+ ' keyTimes="0;' + s + ';' + t + ';' + p + ';' + e + ';1"'
+			+ ' dur="' + cycle + 'ms" repeatCount="indefinite"/>'
 			+ '</rect></clipPath>';
 
-		// opacity: 仅在该行时间段内可见，消除重叠重影
-		const ok0 = k0, ok1 = (tStart + 0.001 / n).toFixed(4);
-		const ok2 = (tEnd - 0.001 / n).toFixed(4), ok3 = k3;
+		// opacity: 0→0→1→1→0→0
+		const os = (tS + 0.001 / n).toFixed(4);
+		const oe = (tE - 0.001 / n).toFixed(4);
 		b += '<g clip-path="url(#c' + i + ')" opacity="0">'
-			+ '<animate attributeName="opacity"'
-			+ ' values="0;1;1;0"'
-			+ ' keyTimes="' + ok0 + ';' + ok1 + ';' + ok2 + ';' + ok3 + '"'
-			+ ' dur="' + cycle + 'ms" begin="0s" repeatCount="indefinite"/>'
+			+ '<animate attributeName="opacity" values="0;0;1;1;0;0"'
+			+ ' keyTimes="0;' + s + ';' + os + ';' + oe + ';' + e + ';1"'
+			+ ' dur="' + cycle + 'ms" repeatCount="indefinite"/>'
 			+ '<text x="' + tx + '" y="' + y + '"'
 			+ ' text-anchor="' + ta + '" dominant-baseline="' + db + '"'
 			+ ' font-family="&quot;' + font + '&quot;, monospace"'
