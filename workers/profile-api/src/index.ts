@@ -53,7 +53,7 @@ function handleTypingSvg(url: URL): Response {
 
 	// Google Fonts CSS
 	const fontCSS = font !== 'monospace'
-		? '<style>@import url("https://fonts.googleapis.com/css2?family=' + font.replace(/ /g, '+') + ':wght@' + weight + '&display=swap");</style>'
+		? '<style>@import url("https://fonts.googleapis.com/css2?family=' + font.replace(/ /g, '+') + ':wght@' + weight + '&amp;display=swap");</style>'
 		: '';
 
 	// 背景色
