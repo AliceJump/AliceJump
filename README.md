@@ -28,10 +28,10 @@
 > 这里用于展示个人项目、开源实践和一些持续变化的动态数据。
 
 <p align="center">
-  <img src="https://alicejump-profile-api.2630923991.workers.dev/ghpvc/AliceJump?style=for-the-badge" alt="Profile views" />
-  <img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/followers/AliceJump?style=for-the-badge" alt="Followers" />
-  <img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/stars/AliceJump?affiliations=OWNER&style=for-the-badge" alt="Total stars" />
-  <img src="https://alicejump-profile-api.2630923991.workers.dev/badge/Status/Actively%20building/2ea043?style=for-the-badge" alt="Status" />
+  <img src="https://alicejump-profile-api.2630923991.workers.dev/ghpvc/AliceJump?style=for-the-badge" height="20" alt="Profile views" />
+  <img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/followers/AliceJump?style=for-the-badge" height="20" alt="Followers" />
+  <img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/stars/AliceJump?affiliations=OWNER&style=for-the-badge" height="20" alt="Total stars" />
+  <img src="https://alicejump-profile-api.2630923991.workers.dev/badge/Status/Actively%20building/2ea043?style=for-the-badge" height="20" alt="Status" />
 </p>
 
 <p align="center">
@@ -95,10 +95,10 @@
 
 ## ok-end-field
 
-[![Stars](https://alicejump-profile-api.2630923991.workers.dev/badge/github/stars/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field)
-[![Forks](https://alicejump-profile-api.2630923991.workers.dev/badge/github/forks/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field)
-[![Last Commit](https://alicejump-profile-api.2630923991.workers.dev/badge/github/last-commit/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field)
-[![License](https://alicejump-profile-api.2630923991.workers.dev/badge/github/license/AliceJump/ok-end-field?style=for-the-badge)](https://github.com/AliceJump/ok-end-field/blob/main/LICENSE)
+<a href="https://github.com/AliceJump/ok-end-field"><img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/stars/AliceJump/ok-end-field?style=for-the-badge" height="20" alt="Stars"/></a>
+<a href="https://github.com/AliceJump/ok-end-field"><img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/forks/AliceJump/ok-end-field?style=for-the-badge" height="20" alt="Forks"/></a>
+<a href="https://github.com/AliceJump/ok-end-field"><img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/last-commit/AliceJump/ok-end-field?style=for-the-badge" height="20" alt="Last Commit"/></a>
+<a href="https://github.com/AliceJump/ok-end-field/blob/main/LICENSE"><img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/license/AliceJump/ok-end-field?style=for-the-badge" height="20" alt="License"/></a>
 
 > 终末地自动化工具
 
@@ -106,10 +106,10 @@
 
 ## ok-gf2
 
-[![Stars](https://alicejump-profile-api.2630923991.workers.dev/badge/github/stars/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2)
-[![Forks](https://alicejump-profile-api.2630923991.workers.dev/badge/github/forks/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2)
-[![Last Commit](https://alicejump-profile-api.2630923991.workers.dev/badge/github/last-commit/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2)
-[![License](https://alicejump-profile-api.2630923991.workers.dev/badge/github/license/AliceJump/ok-gf2?style=for-the-badge)](https://github.com/AliceJump/ok-gf2/blob/main/LICENSE)
+<a href="https://github.com/AliceJump/ok-gf2"><img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/stars/AliceJump/ok-gf2?style=for-the-badge" height="20" alt="Stars"/></a>
+<a href="https://github.com/AliceJump/ok-gf2"><img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/forks/AliceJump/ok-gf2?style=for-the-badge" height="20" alt="Forks"/></a>
+<a href="https://github.com/AliceJump/ok-gf2"><img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/last-commit/AliceJump/ok-gf2?style=for-the-badge" height="20" alt="Last Commit"/></a>
+<a href="https://github.com/AliceJump/ok-gf2/blob/main/LICENSE"><img src="https://alicejump-profile-api.2630923991.workers.dev/badge/github/license/AliceJump/ok-gf2?style=for-the-badge" height="20" alt="License"/></a>
 
 > 少女前线2自动化工具  
 
