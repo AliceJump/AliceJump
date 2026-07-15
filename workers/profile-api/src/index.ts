@@ -125,7 +125,9 @@ function handleBadge(url: URL): Response {
 	if (path.startsWith('/badge/github/')) return handleGitHubBadge(path, url);
 
 	const parts = path.replace('/badge/', '').split('/');
-	let label = parts[0] || 'custom', msg = parts[1] || 'unknown', color = parts[2] || 'brightgreen';
+	let label = decodeURIComponent(parts[0] || 'custom').replace(/-/g, ' ');
+	let msg = decodeURIComponent(parts[1] || 'unknown').replace(/-/g, ' ');
+	let color = decodeURIComponent(parts[2] || 'brightgreen');
 	if (url.searchParams.has('label')) label = url.searchParams.get('label')!;
 	if (url.searchParams.has('message')) msg = url.searchParams.get('message')!;
 	if (url.searchParams.has('color')) color = url.searchParams.get('color')!;
