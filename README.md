@@ -39,12 +39,12 @@
 </p>
 
 <p align="center">
-  <img src="./profile/summary-cards/profile-details.svg" alt="Profile details" />
+  <img src="./profile/summary-cards/0-profile-details.svg" alt="Profile details" />
 </p>
 
 <p align="center">
-  <img src="./profile/summary-cards/repos-per-language.svg" alt="Repos per language" />
-  <img src="./profile/summary-cards/most-commit-language.svg" alt="Most commit language" />
+  <img src="./profile/summary-cards/1-repos-per-language.svg" alt="Repos per language" />
+  <img src="./profile/summary-cards/2-most-commit-language.svg" alt="Most commit language" />
 </p>
 
 <p align="center">
