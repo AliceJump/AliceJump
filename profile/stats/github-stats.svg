@@ -9,7 +9,7 @@
         aria-labelledby="descId"
       >
         <title id="titleId">AliceJump&#39;s GitHub Stats, Rank: A</title>
-        <desc id="descId">Total Stars Earned: 843, Total Commits  (last year) : 3768, Total PRs: 252, Total Issues: 10, Contributed to (last year): 14</desc>
+        <desc id="descId">Total Stars Earned: 845, Total Commits  (last year) : 2035, Total PRs: 262, Total Issues: 11, Contributed to (last year): 15</desc>
         <style>
           .header {
             font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
@@ -73,7 +73,7 @@
         stroke-dashoffset: 251.32741228718345;
       }
       to {
-        stroke-dashoffset: 33.15798035218368;
+        stroke-dashoffset: 32.61351612481075;
       }
     }
   
@@ -169,7 +169,7 @@
         x="224.01"
         y="12.5"
         data-testid="stars"
-      >843</text>
+      >845</text>
     </g>
   </g><g transform="translate(0, 25)">
     <g class="stagger" style="animation-delay: 600ms" transform="translate(25, 0)">
@@ -184,7 +184,7 @@
         x="224.01"
         y="12.5"
         data-testid="commits"
-      >3.8k</text>
+      >2k</text>
     </g>
   </g><g transform="translate(0, 50)">
     <g class="stagger" style="animation-delay: 750ms" transform="translate(25, 0)">
@@ -199,7 +199,7 @@
         x="224.01"
         y="12.5"
         data-testid="prs"
-      >252</text>
+      >262</text>
     </g>
   </g><g transform="translate(0, 75)">
     <g class="stagger" style="animation-delay: 900ms" transform="translate(25, 0)">
@@ -214,7 +214,7 @@
         x="224.01"
         y="12.5"
         data-testid="issues"
-      >10</text>
+      >11</text>
     </g>
   </g><g transform="translate(0, 100)">
     <g class="stagger" style="animation-delay: 1050ms" transform="translate(25, 0)">
@@ -229,7 +229,7 @@
         x="224.01"
         y="12.5"
         data-testid="contribs"
-      >14</text>
+      >15</text>
     </g>
   </g>
     </svg>
