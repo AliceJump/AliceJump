@@ -9,7 +9,7 @@
         aria-labelledby="descId"
       >
         <title id="titleId">AliceJump&#39;s GitHub Stats, Rank: A+</title>
-        <desc id="descId">Total Stars Earned: 853, Total Commits  (last year) : 2478, Total PRs: 423, Total Issues: 16, Contributed to (last year): 17</desc>
+        <desc id="descId">Total Stars Earned: 853, Total Commits  (last year) : 2497, Total PRs: 426, Total Issues: 16, Contributed to (last year): 17</desc>
         <style>
           .header {
             font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
@@ -73,7 +73,7 @@
         stroke-dashoffset: 251.32741228718345;
       }
       to {
-        stroke-dashoffset: 25.077046508340437;
+        stroke-dashoffset: 25.06754688142856;
       }
     }
   
@@ -199,7 +199,7 @@
         x="224.01"
         y="12.5"
         data-testid="prs"
-      >423</text>
+      >426</text>
     </g>
   </g><g transform="translate(0, 75)">
     <g class="stagger" style="animation-delay: 900ms" transform="translate(25, 0)">
